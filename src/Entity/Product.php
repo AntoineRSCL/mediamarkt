@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,6 +36,14 @@ class Product
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
+
+    #[ORM\OneToMany(mappedBy: 'relation', targetEntity: Background::class, orphanRemoval: true)]
+    private Collection $backgrounds;
+
+    public function __construct()
+    {
+        $this->backgrounds = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +130,36 @@ class Product
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Background>
+     */
+    public function getBackgrounds(): Collection
+    {
+        return $this->backgrounds;
+    }
+
+    public function addBackground(Background $background): static
+    {
+        if (!$this->backgrounds->contains($background)) {
+            $this->backgrounds->add($background);
+            $background->setRelation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBackground(Background $background): static
+    {
+        if ($this->backgrounds->removeElement($background)) {
+            // set the owning side to null (unless already changed)
+            if ($background->getRelation() === $this) {
+                $background->setRelation(null);
+            }
+        }
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Product;
+use App\Entity\Background;
 use Cocur\Slugify\Slugify;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -47,8 +48,17 @@ class ProductFixtures extends Fixture
                 ->setBrand($brand)
                 ->setImage($image);
 
+                //Gestion des images des produits
+                for ($g=1; $g <= rand(3,5) ; $g++) { 
+                    $background = new Background();
+                    $background->setUrl('https://picsum.photos/id/'.$g.'/900')
+                        ->setCaption($faker->sentence())
+                        ->setRelation($product);
+                    $manager->persist($background);
+                }
 
-                $manager->persist($product);
+
+            $manager->persist($product);
         }
 
 
