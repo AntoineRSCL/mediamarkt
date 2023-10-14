@@ -38,7 +38,7 @@ class ProductFixtures extends Fixture
                     $brand = "HP";
                 }
             }
-            $image = 'https://picsum.photos/seed/picsum/1000/350';
+            $image = 'https://fs-prod-cdn.nintendo-europe.com/media/images/10_share_images/games_15/nintendo_switch_4/2x1_NSwitch_SuperMarioBrosWonder_image1600w.jpg';
 
             $product->setName($name)
                 ->setSlug($slug)

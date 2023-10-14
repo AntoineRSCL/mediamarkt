@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BackgroundRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BackgroundRepository::class)]
 class Background
@@ -12,16 +13,19 @@ class Background
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    
+    #[ORM\Column(length: 255)]
+    #[Assert\Url(message: "Veuillez donner une URL valide")]
+    private ?string $url = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 10, max: 255, minMessage:"Le titre doit faire plus de 10 caractères", maxMessage: "Le titre ne doit pas faire plus de 255 caractères")]
+    private ?string $caption = null;
 
     #[ORM\ManyToOne(inversedBy: 'backgrounds')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $relation = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $url = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $caption = null;
 
     public function getId(): ?int
     {

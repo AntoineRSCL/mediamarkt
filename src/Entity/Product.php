@@ -8,9 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields:['name'], message:"Un autre produit possède déjà ce nom, merci de le modifier")]
 class Product
 {
     #[ORM\Id]
@@ -19,27 +22,33 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 10, max: 255, minMessage:"Le nom doit faire plus de 10 caractères", maxMessage: "Le nom ne doit pas faire plus de 255 caractères")]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(min: 10, max: 255, minMessage:"La description doit faire plus de 10 caractères", maxMessage: "La description ne doit pas faire plus de 255 caractères")]
     private ?string $description = null;
 
     #[ORM\Column]
     private ?float $price = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(min: 10, max: 50, minMessage:"Le type doit faire plus de 10 caractères", maxMessage: "Le type ne doit pas faire plus de 50 caractères")]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 10, max: 255, minMessage:"La marque doit faire plus de 10 caractères", maxMessage: "La marque ne doit pas faire plus de 255 caractères")]
     private ?string $brand = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Url(message: "Il faut une URL valide")]
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'relation', targetEntity: Background::class, orphanRemoval: true)]
+    #[Valid()]
     private Collection $backgrounds;
 
     public function __construct()
