@@ -25,7 +25,6 @@
         </div>
     </div>
 </nav>
-{#{{ dump(app.flashes) }}
 {% for label, messages in app.flashes %}
     <div class="container">
         <div class="alert alert-{{label}}">
@@ -34,4 +33,4 @@
             {% endfor %}
         </div>
     </div>
-{% endfor %}}#}
+{% endfor %}

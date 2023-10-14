@@ -1,0 +1,96 @@
+{% extends "base.html.twig" %}
+
+
+{% block title %}Création d'un produit{% endblock %}
+
+{% form_theme myForm _self %}
+
+{% block body %}
+    <div class="container">
+        <h1>Création d'un nouveau produit</h1>
+
+        {{ form_start(myForm) }}
+
+            {{form_widget(myForm)}}
+
+            <button type="submit" class="btn btn-primary mt-3">Création d'une annonce</button>
+
+        {{ form_end(myForm) }}
+    </div>
+{% endblock %}
+
+{% block _product_backgrounds_widget %}
+{# Definition du champ annonce_image, la variable form correspond au hamp annonce_image #}
+<p>Ici, vous pouvez ajouter vos propres images</p>
+{{form_widget(form)}}
+<input type="hidden" id="widgets-counter" values="0">
+<div class="form-group">
+    <button type="button" id="add-image" class="btn btn-primary">Ajouter une image</button>
+</div>
+
+{% endblock %}
+
+{% block _product_backgrounds_entry_row %}
+    {{form_widget(form)}}
+{% endblock %}
+
+{% block _product_backgrounds_entry_widget %}
+    <div class="form-group my-2" id="block_{{id}}">
+        <div class="row">
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        {{form_widget(form.url)}}
+                        {{form_errors(form.url)}}
+                    </div>
+                    <div class="col">
+                        {{form_widget(form.caption)}}
+                        {{form_errors(form.caption)}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">X</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const addImage = document.querySelector('#add-image');
+        addImage.addEventListener('click', ()=>{
+            //compter combien j'ai de form group pour les indeices ex annonce image 0 url
+            const widgetCounter = document.querySelector("#widgets-counter")
+            const index = +widgetCounter.value // le + transforme un string en nombre
+            const annonceImages = document.querySelector("#product_backgrounds")
+            //recup le prototype dans la div
+
+            const prototype = annonceImages.dataset.prototype.replace(/__name__/g, index)// drapeau g pour indiquer que l'on va le faire plusieurs fois
+            annonceImages.insertAdjacentHTML('beforeend', prototype)
+            widgetCounter.value = index+1
+            handleDeleteButtons()
+        })
+
+        const updateCounter = () => {
+            const count = document.querySelectorAll("#product_backgrounds div.form-group").length
+            document.querySelector("#widgets-counter").value = count
+        }
+
+        const handleDeleteButtons = () => {
+            let deletes = document.querySelectorAll("button[data-action='delete']")
+            deletes.forEach(button => {
+                button.addEventListener('click', ()=>{
+                    const target = button.dataset.target
+                    const elementTarget = document.querySelector(target)
+                    if(elementTarget){
+                        elementTarget.remove() //supprimer l'element
+                    }
+                })
+            })
+        }
+
+        updateCounter()
+        handleDeleteButtons()
+    </script>
+{% endblock %}
