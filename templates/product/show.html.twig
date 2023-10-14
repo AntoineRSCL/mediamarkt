@@ -1,0 +1,58 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Annonce :
+	{{product.name}}
+{% endblock %}
+
+{% block body %}
+	<div class="annonce-title" style="background-image:url({{product.image}})">
+		<div class="container">
+			<h1>{{product.name}}</h1>
+			<p>{{product.description}}</p>
+			<p class="h2">
+				<strong>
+					Marque : {{product.brand}}</strong>
+				<strong>
+                <br>
+                {{product.price}}€</strong>
+			</p>
+			<a href="#" class="btn btn-primary">Acheter</a>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 mb-3">
+				<div class="bd-example">
+					<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+						<div class="carousel-indicators">
+							{% for background in product.backgrounds %}
+								<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{loop.index0}}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{loop.index}}"></button>
+							{% endfor %}
+						</div>
+						<div class="carousel-inner">
+							{% for background in product.backgrounds %}
+								<div class="carousel-item {% if loop.first %}active{% endif %}">
+									<img src="{{background.url}}" class="d-block w-100" alt="image de {{product.name}}">
+									<div class="carousel-caption d-none d-md-block">
+										<h5>{{product.name}}</h5>
+										<p>{{background.caption}}</p>
+									</div>
+								</div>
+							{% endfor %}
+
+						</div>
+						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
