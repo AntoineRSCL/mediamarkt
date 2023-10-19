@@ -17,27 +17,17 @@ class ProductFixtures extends Fixture
         $faker = Factory::create('fr_FR');
         $slugify = new Slugify();
 
+        $types = ["Télévision", "Jeu Vidéo", "Consoles", "Téléphones"];
+        $brands = ["Sony", "Microsoft", "Apple", "Nintendo"];
+
         
         for ($i=1; $i <= 30; $i++) { 
             $product = new Product();
             $name = "Produit Numero $i";
             $slug = $slugify->slugify($name);
             $description = $faker->paragraph(4);
-            if ($i % 2 == 0) {
-                $type = "Jeu Video";
-                if($i > 15){
-                    $brand = "Nintendo";
-                }else{
-                    $brand = "Playstation";
-                }
-            }else{
-                $type = "Television";
-                if($i > 15){
-                    $brand = "Sony";
-                }else{
-                    $brand = "HP";
-                }
-            }
+            $type = $faker->randomElement($types);
+            $brand = $faker->randomElement($brands);
             $image = 'https://fs-prod-cdn.nintendo-europe.com/media/images/10_share_images/games_15/nintendo_switch_4/2x1_NSwitch_SuperMarioBrosWonder_image1600w.jpg';
 
             $product->setName($name)

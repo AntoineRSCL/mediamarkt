@@ -33,11 +33,11 @@ class Product
     private ?float $price = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\Length(min: 10, max: 50, minMessage:"Le type doit faire plus de 10 caractères", maxMessage: "Le type ne doit pas faire plus de 50 caractères")]
+    #[Assert\Length(max: 50, maxMessage: "Le type ne doit pas faire plus de 50 caractères")]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 10, max: 255, minMessage:"La marque doit faire plus de 10 caractères", maxMessage: "La marque ne doit pas faire plus de 255 caractères")]
+    #[Assert\Length(max: 255, maxMessage: "La marque ne doit pas faire plus de 255 caractères")]
     private ?string $brand = null;
 
     #[ORM\Column(length: 255)]

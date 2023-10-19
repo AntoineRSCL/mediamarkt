@@ -68,6 +68,54 @@ class ProductController extends AbstractController
         ]);
     }
 
+    /**
+     * Permet de modifier un produit
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param Product $product
+     * @return Response
+     */
+    #[Route("/products/{slug}/edit", name:"products_edit")]
+    public function edit(Request $request, EntityManagerInterface $manager, Product $product): Response
+    {
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            //Pour mettre a jour automatiquement le slug
+            $product->setSlug("");
+
+                //gestion des images
+                foreach($product->getBackgrounds() as $background)
+                {
+                    $background->setRelation($product);
+                    $manager->persist($background);
+                }
+            
+            $manager->persist($product);
+            $manager->flush();
+
+            $this->addFlash(
+                'warning',
+                "L'annonce <strong>".$product->getName()."</strong> a bien été modifiée !"
+            );
+
+            return $this->redirectToRoute('products_show', [
+                'slug' => $product->getSlug()
+            ]);
+        }
+
+
+        return $this->render("product/edit.html.twig", [
+            "product" => $product,
+            "myForm" => $form->createView()
+        ]);
+    }
+
+
+
 
     #[Route("/products/{slug}", name: "products_show")]
     public function show(string $slug, Product $product): Response
