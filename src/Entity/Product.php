@@ -51,6 +51,10 @@ class Product
     #[Valid()]
     private Collection $backgrounds;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $seller = null;
+
     public function __construct()
     {
         $this->backgrounds = new ArrayCollection();
@@ -191,5 +195,17 @@ class Product
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->name);
         }
+    }
+
+    public function getSeller(): ?User
+    {
+        return $this->seller;
+    }
+
+    public function setSeller(?User $seller): static
+    {
+        $this->seller = $seller;
+
+        return $this;
     }
 }
