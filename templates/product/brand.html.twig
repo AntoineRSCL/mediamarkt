@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Produits de la marque {{brand}}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            {% for product in products %}
+            {% set url = path('products_show', {'slug':product.slug}) %}
+                <div class="col-md-4">
+                    <div class="card bg-light mb-3">
+                        <div class="card-header text-center">
+                            <strong>{{product.price}}€</strong>
+                            <strong> Marque : {{product.brand}}</strong>
+                        </div>
+                        <a href="{{url}}">
+                            <img src="{{product.image}}" alt="Image de l'annonce {{product.name}}" class="productimg">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">{{product.name}}</h4>
+                            <p class="card-text">{{product.description}}</p>
+                            <a href="{{url}}" class="btn btn-secondary">En savoir plus</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

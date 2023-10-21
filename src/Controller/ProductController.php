@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProductController extends AbstractController
 {
+
     /**
      * Affiche tous les produits du site
      *
@@ -30,6 +31,25 @@ class ProductController extends AbstractController
         ]);
     }
 
+    #[Route('/product/{brand}', name: 'product_marque')]
+    /**
+     * Permet d'afficher les produits d'une marque
+     *
+     * @param string $brand
+     * @param ProductRepository $repo
+     * @return Response
+     */
+    public function brand(string $brand, ProductRepository $repo): Response
+    {
+        $products = $repo->findBy(array('brand' => $brand));
+
+        
+
+        return $this->render('product/brand.html.twig', [
+            'products' => $products,
+            'brand' => $brand
+        ]);
+    }
 
     #[Route("/products/new", name:"products_create")]
     public function create(Request $request, EntityManagerInterface $manager): Response
