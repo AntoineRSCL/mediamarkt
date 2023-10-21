@@ -50,6 +50,8 @@ class ProductController extends AbstractController
                 $manager->persist($background);
             }
 
+            $product->setSeller($this->getUser());
+
             // je persiste mon objet Ad
             $manager->persist($product);
             // j'envoie les persistances dans la bdd
